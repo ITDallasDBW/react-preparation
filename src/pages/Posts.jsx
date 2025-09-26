@@ -13,11 +13,18 @@ const Posts = () => {
   }
 
       async function fetchPosts(userId) {
+        setLoading(true);
       const { data } = await axios.get(
         `https://jsonplaceholder.typicode.com/posts?userId=${userId || id}`
       );
       setPosts(data);
       setLoading(false);
+    }
+
+    function onSearchKeyPress(key) {
+        if (key === 'Enter'){
+            onSearch()
+        }
     }
 
   useEffect(() => {
@@ -31,7 +38,13 @@ const Posts = () => {
         <button>← Back</button>
         <div className="post__search--container">
           <label className="post__search--label">Search by Id</label>
-          <input type="number" value={searchId} onChange={(event) => setSearchId(event.target.value)} />
+          <input type="number" 
+          value={searchId} 
+          onChange={(event) => setSearchId(event.target.value)}
+        //   onKeyDown={(event) => event.key === 'Enter' && onSearch()} 
+        onKeyDown={(event) => onSearchKeyPress(event.key)}
+          />
+
           <button onClick={() => onSearch()}>Enter</button>
         </div>
       </div>
